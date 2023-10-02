@@ -115,7 +115,6 @@ button {
 
 .calculator__keys > *:active::before,
 .calculator__keys > .is-depressed::before {
-  background-color: rgba(255, 255, 255, 0.5);
   bottom: 0;
   content: "";
   left: 0;
@@ -125,6 +124,16 @@ button {
   top: 0;
   z-index: 1;
   border-radius: 10px;
+}
+
+body.dark .calculator__keys > *:active::before,
+body.dark .calculator__keys > .is-depressed::before {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+body:not(.dark) .calculator__keys > *:active::before,
+body:not(.dark) .calculator__keys > .is-depressed::before {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .key--equal {

@@ -1,30 +1,33 @@
-// Function to perform basic calculations based on operator
+// Calculator Functions
+
 const calculate = (n1, operator, n2) => {
   const firstNum = parseFloat(n1);
   const secondNum = parseFloat(n2);
-  if (operator === "add") return firstNum + secondNum;
-  if (operator === "subtract") return firstNum - secondNum;
-  if (operator === "multiply") return firstNum * secondNum;
-  if (operator === "divide") return firstNum / secondNum;
+
+  switch (operator) {
+    case "add":
+      return firstNum + secondNum;
+    case "subtract":
+      return firstNum - secondNum;
+    case "multiply":
+      return firstNum * secondNum;
+    case "divide":
+      return firstNum / secondNum;
+    default:
+      return NaN;
+  }
 };
 
-// Function to determine the type of key (number, operator, delete, etc.)
 const getKeyType = (key) => {
-  const { action } = key.dataset;
+  const action = key.dataset.action;
+
   if (!action) return "number";
-  if (
-    action === "add" ||
-    action === "subtract" ||
-    action === "multiply" ||
-    action === "divide"
-  )
+  if (["add", "subtract", "multiply", "divide"].includes(action))
     return "operator";
   if (action === "delete") return "delete";
-  // For everything else, return the action
   return action;
 };
 
-// Function to create the result string based on key pressed and calculator state
 const createResultString = (key, displayedNum, state) => {
   const keyContent = key.textContent;
   const keyType = getKeyType(key);
@@ -54,10 +57,10 @@ const createResultString = (key, displayedNum, state) => {
       : displayedNum;
   }
 
-  if (keyType === "clear") return 0;
+  if (keyType === "clear") return "0";
 
   if (keyType === "delete") {
-    return displayedNum.slice(0, -1); // Remove the last character
+    return displayedNum === "0" ? "0" : displayedNum.slice(0, -1);
   }
 
   if (keyType === "calculate") {
@@ -74,7 +77,6 @@ const createResultString = (key, displayedNum, state) => {
 
 let calculateClicked = false;
 
-// Function to update the calculator's state based on key pressed
 const updateCalculatorState = (
   key,
   calculator,
@@ -96,17 +98,16 @@ const updateCalculatorState = (
       previousKeyType !== "calculate"
         ? calculatedValue
         : displayedNum;
-    calculateClicked = false; // Reset the calculateClicked flag
+    calculateClicked = false;
   }
 
   if (keyType === "calculate") {
     if (calculateClicked) {
-      // If calculate has already been clicked, don't update the state
       return;
     }
     calculator.dataset.modValue =
       firstValue && previousKeyType === "calculate" ? modValue : displayedNum;
-    calculateClicked = true; // Set the calculateClicked flag
+    calculateClicked = true;
   }
 
   if (keyType === "clear" && key.textContent === "DEL") {
@@ -114,13 +115,14 @@ const updateCalculatorState = (
     calculator.dataset.modValue = "";
     calculator.dataset.operator = "";
     calculator.dataset.previousKeyType = "";
-    calculateClicked = false; // Reset the calculateClicked flag
+    calculateClicked = false;
   }
 };
 
-// Function to update the visual state of the calculator
 const updateVisualState = (key, calculator) => {
   const keyType = getKeyType(key);
+  const clearButton = calculator.querySelector("[data-action=clear]");
+
   Array.from(key.parentNode.children).forEach((k) =>
     k.classList.remove("is-depressed")
   );
@@ -129,18 +131,19 @@ const updateVisualState = (key, calculator) => {
   if (keyType === "clear" && key.textContent !== "DEL")
     key.textContent = "RESET";
   if (keyType !== "clear") {
-    const clearButton = calculator.querySelector("[data-action=clear]");
     clearButton.textContent = "RESET";
   }
 };
+
+// Calculator Event Listener
 
 const calculator = document.querySelector(".calculator");
 const display = calculator.querySelector(".calculator__display");
 const keys = calculator.querySelector(".calculator__keys");
 
-// Event listener for handling button clicks
 keys.addEventListener("click", (e) => {
   if (!e.target.matches("button")) return;
+
   const key = e.target;
   const displayedNum = display.textContent;
   const resultString = createResultString(
@@ -154,10 +157,9 @@ keys.addEventListener("click", (e) => {
   updateVisualState(key, calculator);
 });
 
-/* Theme Switcher */
+// Theme Switcher
 
 const toggler = document.querySelector(".toggler");
-const ball = document.querySelector(".ball");
 const body = document.body;
 
 toggler.addEventListener("click", () => {
