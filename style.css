@@ -77,14 +77,14 @@ button {
   text-align: left;
 }
 
-.calculator {
+.calculator-container {
   margin-left: auto;
   margin-right: auto;
   margin-top: 2em !important;
   overflow: hidden;
 }
 
-.calculator__display {
+.calculator-container .calculator-display {
   background-color: var(--color-display);
   color: var(--color-text);
   font-size: 1.814285714em;
@@ -94,7 +94,7 @@ button {
   border-radius: 8px;
 }
 
-.calculator__keys {
+.calculator-container .calculator-keys {
   background-color: var(--color-calculator-bg);
   display: grid;
   grid-gap: 25px;
@@ -103,7 +103,7 @@ button {
   padding: 25px;
 }
 
-.calculator__keys > * {
+.calculator-container .calculator-keys > * {
   background-color: var(--color-keys-bg);
   color: var(--color-keys-text);
   padding: 0.5em 1.25em;
@@ -113,8 +113,8 @@ button {
   border-bottom: 4px outset var(--color-keys-border);
 }
 
-.calculator__keys > *:active::before,
-.calculator__keys > .is-depressed::before {
+.calculator-container .calculator-keys > *:active::before,
+.calculator-container .calculator-keys > .is-depressed::before {
   bottom: 0;
   content: "";
   left: 0;
@@ -126,51 +126,51 @@ button {
   border-radius: 10px;
 }
 
-body.dark .calculator__keys > *:active::before,
-body.dark .calculator__keys > .is-depressed::before {
+body.dark .calculator-container .calculator-keys > *:active::before,
+body.dark .calculator-container .calculator-keys > .is-depressed::before {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-body:not(.dark) .calculator__keys > *:active::before,
-body:not(.dark) .calculator__keys > .is-depressed::before {
+body:not(.dark) .calculator-container .calculator-keys > *:active::before,
+body:not(.dark) .calculator-container .calculator-keys > .is-depressed::before {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-.key--equal {
+.calculator-container .key-equal {
   background-color: var(--color-keys-equal-bg);
   color: #eee;
   border-bottom: 4px outset var(--color-keys-equal-border);
 }
 
-.key--delete,
-.key--reset {
+.calculator-container .key-delete,
+.calculator-container .key-reset {
   background-color: var(--color-keys-reset-bg);
   border-bottom: 4px outset var(--color-keys-reset-border);
   color: #eee;
 }
 
-.calculator__keys > button:nth-last-child(1),
-.calculator__keys > button:nth-last-child(2) {
+.calculator-container .calculator-keys > button:nth-last-child(1),
+.calculator-container .calculator-keys > button:nth-last-child(2) {
   grid-column: span 2;
 }
 
 /* Theme switch */
 
-.theme_switcher p {
+.theme-switcher-container p {
   text-transform: uppercase;
   font-size: 16px;
   margin-bottom: 0 !important;
   margin-right: 25px;
 }
 
-.toggler {
+.theme-switcher-container .theme-toggler {
   background-color: var(--color-display);
   height: 30px;
   width: 70px;
   border-radius: 50px;
 }
 
-.ball {
+.theme-switcher-container .theme-toggler .toggler-ball {
   display: block;
   position: relative;
   border-radius: 50%;
@@ -182,16 +182,16 @@ body:not(.dark) .calculator__keys > .is-depressed::before {
   opacity: 1;
 }
 
-body.default .ball {
+body.default .theme-switcher-container .theme-toggle .toggler-ball {
   background-color: var(--color-keys-equal-bg);
 }
 
-body.dark .ball {
+body.dark .theme-switcher-container .theme-toggle .toggler-ball {
   background-color: var(--color-keys-equal-bg);
   transform: translateX(25px);
 }
 
-body.light .ball {
+body.light .theme-switcher-container .theme-toggle .toggler-ball {
   background-color: var(--color-keys-equal-bg);
   transform: translateX(45px);
 }
@@ -199,11 +199,11 @@ body.light .ball {
 /* Media */
 
 @media screen {
-  .calculator__keys {
+  .calculator-keys {
     grid-gap: 15px !important;
   }
 
-  .calculator__keys > * {
+  .calculator-keys > * {
     padding: 5px;
   }
 }

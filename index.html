@@ -24,41 +24,39 @@
     <div class="container">
       <div class="row">
         <div
-          class="col-lg-6 col-md-9 m-auto theme_switcher d-flex flex-row justify-content-between"
+          class="col-lg-6 col-md-9 m-auto theme-switcher-container d-flex flex-row justify-content-between"
         >
-          <h1>calc</h1>
-          <div class="d-flex flex-row align-items-center">
-            <p>theme</p>
-            <div class="toggler">
-              <span class="ball"></span>
+          <h1 class="app-title">calc</h1>
+          <div class="theme-toggle d-flex flex-row align-items-center">
+            <p class="theme-label">theme</p>
+            <div class="theme-toggler">
+              <span class="toggler-ball"></span>
             </div>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-6 col-md-9 calculator">
-          <div class="calculator__display">0</div>
-          <div class="calculator__keys">
+        <div class="col-lg-6 col-md-9 calculator-container">
+          <div class="calculator-display">0</div>
+          <div class="calculator-keys">
             <button>7</button>
             <button>8</button>
             <button>9</button>
-            <button class="key--delete" data-action="delete">DEL</button>
+            <button class="key-delete" data-action="delete">DEL</button>
             <button>4</button>
             <button>5</button>
             <button>6</button>
-            <button class="key--operator" data-action="add">+</button>
+            <button class="key-operator" data-action="add">+</button>
             <button>1</button>
             <button>2</button>
             <button>3</button>
-            <button class="key--operator" data-action="subtract">-</button>
+            <button class="key-operator" data-action="subtract">-</button>
             <button data-action="decimal">.</button>
             <button>0</button>
-            <button class="key--operator" data-action="divide">/</button>
-            <button class="key--operator" data-action="multiply">
-              &times;
-            </button>
-            <button class="key--reset" data-action="clear">RESET</button>
-            <button class="key--equal" data-action="calculate">=</button>
+            <button class="key-operator" data-action="divide">/</button>
+            <button class="key-operator" data-action="multiply">×</button>
+            <button class="key-reset" data-action="clear">RESET</button>
+            <button class="key-equal" data-action="calculate">=</button>
           </div>
         </div>
       </div>

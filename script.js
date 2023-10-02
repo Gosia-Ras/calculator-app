@@ -137,9 +137,9 @@ const updateVisualState = (key, calculator) => {
 
 // Calculator Event Listener
 
-const calculator = document.querySelector(".calculator");
-const display = calculator.querySelector(".calculator__display");
-const keys = calculator.querySelector(".calculator__keys");
+const calculator = document.querySelector(".calculator-container");
+const display = calculator.querySelector(".calculator-display");
+const keys = calculator.querySelector(".calculator-keys");
 
 keys.addEventListener("click", (e) => {
   if (!e.target.matches("button")) return;
@@ -159,7 +159,7 @@ keys.addEventListener("click", (e) => {
 
 // Theme Switcher
 
-const toggler = document.querySelector(".toggler");
+const toggler = document.querySelector(".theme-toggler");
 const body = document.body;
 
 toggler.addEventListener("click", () => {
