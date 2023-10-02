@@ -61,6 +61,9 @@ const createResultString = (key, displayedNum, state) => {
   }
 
   if (keyType === "calculate") {
+    if (calculateClicked) {
+      return displayedNum;
+    }
     return firstValue
       ? previousKeyType === "calculate"
         ? calculate(displayedNum, operator, modValue)
@@ -68,6 +71,8 @@ const createResultString = (key, displayedNum, state) => {
       : displayedNum;
   }
 };
+
+let calculateClicked = false;
 
 // Function to update the calculator's state based on key pressed
 const updateCalculatorState = (
@@ -91,11 +96,17 @@ const updateCalculatorState = (
       previousKeyType !== "calculate"
         ? calculatedValue
         : displayedNum;
+    calculateClicked = false; // Reset the calculateClicked flag
   }
 
   if (keyType === "calculate") {
+    if (calculateClicked) {
+      // If calculate has already been clicked, don't update the state
+      return;
+    }
     calculator.dataset.modValue =
       firstValue && previousKeyType === "calculate" ? modValue : displayedNum;
+    calculateClicked = true; // Set the calculateClicked flag
   }
 
   if (keyType === "clear" && key.textContent === "DEL") {
@@ -103,6 +114,7 @@ const updateCalculatorState = (
     calculator.dataset.modValue = "";
     calculator.dataset.operator = "";
     calculator.dataset.previousKeyType = "";
+    calculateClicked = false; // Reset the calculateClicked flag
   }
 };
 
