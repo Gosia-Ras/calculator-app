@@ -153,3 +153,22 @@ keys.addEventListener("click", (e) => {
   updateCalculatorState(key, calculator, resultString, displayedNum);
   updateVisualState(key, calculator);
 });
+
+/* Theme Switcher */
+
+const toggler = document.querySelector(".toggler");
+const ball = document.querySelector(".ball");
+const body = document.body;
+
+toggler.addEventListener("click", () => {
+  if (body.classList.contains("dark")) {
+    body.classList.remove("dark");
+    body.classList.add("light");
+  } else if (body.classList.contains("light")) {
+    body.classList.remove("light");
+    body.classList.add("default");
+  } else {
+    body.classList.remove("default");
+    body.classList.add("dark");
+  }
+});

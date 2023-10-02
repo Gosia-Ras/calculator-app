@@ -1,13 +1,52 @@
-html {
+body {
   box-sizing: border-box;
-  font-size: 1.84em;
-  font-weight: 700;
+  font-size: 1.84em !important;
+  font-weight: 700 !important;
   line-height: 1.3;
+  font-family: "Lato", sans-serif !important;
+  color: var(--color-text) !important;
 }
 
-:root {
-  font-family: "Lato", sans-serif;
-  color: #eceaea;
+.default {
+  --color-bg: #282d6d;
+  --color-text: #eceaea;
+  --color-display: #0e1027;
+  --color-calculator-bg: #1d204b;
+  --color-keys-bg: #cfcece;
+  --color-keys-text: #242424;
+  --color-keys-border: #cacaca;
+  --color-keys-equal-bg: #e22c26;
+  --color-keys-equal-border: #b9231e;
+  --color-keys-reset-bg: #5e63af;
+  --color-keys-reset-border: #404481;
+}
+
+.light {
+  --color-text: #242424;
+  --color-bg: #e2e2e2;
+  --color-display: #eeeeee;
+  --color-calculator-bg: #d1d1d1;
+  --color-keys-bg: #e9e9e9;
+  --color-keys-text: #242424;
+  --color-keys-border: #bdb9b9;
+  --color-keys-equal-bg: #c94821;
+  --color-keys-equal-border: #a0451b;
+  --color-keys-reset-bg: #1b756e;
+  --color-keys-reset-border: #215044;
+}
+
+.dark {
+  --color-text: #eceaea;
+  --color-bg: #210631;
+  --color-display: #2a083f;
+  --color-calculator-bg: #2a083f;
+  --color-keys-bg: #3f0d5e;
+  --color-keys-text: #e6d32e;
+  --color-keys-border: #a317ce;
+  --color-keys-equal-bg: #26e2b3;
+  --color-keys-equal-border: #23e6cc;
+  --color-keys-reset-bg: #731091;
+  --color-keys-reset-border: #8f13b4;
 }
 
 *,
@@ -19,11 +58,9 @@ html {
 body {
   margin: 0;
   align-items: center;
-  background-color: #282d6d;
-  display: flex;
-  flex-direction: column;
+  background-color: var(--color-bg) !important;
   height: 100vh;
-  justify-content: center;
+  padding-top: 150px;
 }
 
 /* full button reset */
@@ -40,44 +77,40 @@ button {
   text-align: left;
 }
 
-.container > p {
-  text-align: center;
-}
-
 .calculator {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 2em;
-  max-width: 600px;
+  margin-top: 2em !important;
   overflow: hidden;
 }
 
 .calculator__display {
-  background-color: #0e1027;
-  color: #fff;
+  background-color: var(--color-display);
+  color: var(--color-text);
   font-size: 1.814285714em;
   padding: 0.5em 0.75em;
   text-align: right;
   margin-bottom: 30px;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 .calculator__keys {
-  background-color: #1d204b;
+  background-color: var(--color-calculator-bg);
   display: grid;
-  grid-gap: 15px;
+  grid-gap: 25px;
   grid-template-columns: repeat(4, 1fr);
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 25px;
 }
 
 .calculator__keys > * {
-  background-color: #cfcece;
+  background-color: var(--color-keys-bg);
+  color: var(--color-keys-text);
   padding: 0.5em 1.25em;
   position: relative;
   text-align: center;
   border-radius: 10px;
-  border-bottom: 4px outset #cacaca;
+  border-bottom: 4px outset var(--color-keys-border);
 }
 
 .calculator__keys > *:active::before,
@@ -91,26 +124,77 @@ button {
   right: 0;
   top: 0;
   z-index: 1;
-}
-
-.key--operator {
-  background-color: #eee;
+  border-radius: 10px;
 }
 
 .key--equal {
-  background-color: #e22c26;
+  background-color: var(--color-keys-equal-bg);
   color: #eee;
-  border-bottom: 4px outset #b9231e;
+  border-bottom: 4px outset var(--color-keys-equal-border);
 }
 
 .key--delete,
 .key--reset {
-  background-color: #5e63af;
-  border-bottom: 4px outset #404481;
+  background-color: var(--color-keys-reset-bg);
+  border-bottom: 4px outset var(--color-keys-reset-border);
   color: #eee;
 }
 
 .calculator__keys > button:nth-last-child(1),
 .calculator__keys > button:nth-last-child(2) {
   grid-column: span 2;
+}
+
+/* Theme switch */
+
+.theme_switcher p {
+  text-transform: uppercase;
+  font-size: 16px;
+  margin-bottom: 0 !important;
+  margin-right: 25px;
+}
+
+.toggler {
+  background-color: var(--color-display);
+  height: 30px;
+  width: 70px;
+  border-radius: 50px;
+}
+
+.ball {
+  display: block;
+  position: relative;
+  border-radius: 50%;
+  height: 22px;
+  width: 22px;
+  top: 4px;
+  transform: translateX(5px);
+  transition: transform 0.2s linear, opacity 0.2s linear;
+  opacity: 1;
+}
+
+body.default .ball {
+  background-color: var(--color-keys-equal-bg);
+}
+
+body.dark .ball {
+  background-color: var(--color-keys-equal-bg);
+  transform: translateX(25px);
+}
+
+body.light .ball {
+  background-color: var(--color-keys-equal-bg);
+  transform: translateX(45px);
+}
+
+/* Media */
+
+@media screen {
+  .calculator__keys {
+    grid-gap: 15px !important;
+  }
+
+  .calculator__keys > * {
+    padding: 5px;
+  }
 }
