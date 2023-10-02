@@ -80,6 +80,10 @@ button {
   border-bottom: 4px outset #cacaca;
 }
 
+.calculator__keys > .is-depressed {
+  background-color: #b1afaf;
+}
+
 .calculator__keys > *:active::before,
 .calculator__keys > .is-depressed::before {
   background-color: rgba(0, 0, 0, 0.2);
