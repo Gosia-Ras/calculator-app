@@ -1,51 +1,62 @@
 // Calculator Functions
 
-const calculate = (n1, operator, n2) => {
-  const firstNum = parseFloat(n1);
-  const secondNum = parseFloat(n2);
+const performCalculation = (num1, operation, num2) => {
+  const firstNumber = parseFloat(num1);
+  const secondNumber = parseFloat(num2);
 
-  switch (operator) {
+  if (operation === "divide" && secondNumber === 0) {
+    alert("You really shouldn't do that");
+  }
+
+  let result;
+  switch (operation) {
     case "add":
-      return firstNum + secondNum;
+      result = firstNumber + secondNumber;
+      break;
     case "subtract":
-      return firstNum - secondNum;
+      result = firstNumber - secondNumber;
+      break;
     case "multiply":
-      return firstNum * secondNum;
+      result = firstNumber * secondNumber;
+      break;
     case "divide":
-      return firstNum / secondNum;
+      result = firstNumber / secondNumber;
+      break;
     default:
       return NaN;
   }
+
+  // Round the result to 4 decimal places if necessary
+  return Math.round(result * 10000) / 10000;
 };
 
-const getKeyType = (key) => {
-  const action = key.dataset.action;
+const determineKeyType = (key) => {
+  const actionType = key.dataset.action;
 
-  if (!action) return "number";
-  if (["add", "subtract", "multiply", "divide"].includes(action))
+  if (!actionType) return "number";
+  if (["add", "subtract", "multiply", "divide"].includes(actionType))
     return "operator";
-  if (action === "delete") return "delete";
-  return action;
+  return actionType;
 };
 
-const createResultString = (key, displayedNum, state) => {
-  const keyContent = key.textContent;
-  const keyType = getKeyType(key);
-  const { firstValue, operator, modValue, previousKeyType } = state;
+const generateResultDisplay = (key, currentDisplay, calculatorState) => {
+  const keyValue = key.textContent;
+  const keyType = determineKeyType(key);
+  const { firstValue, operator, modValue, previousKeyType } = calculatorState;
 
   if (keyType === "number") {
-    return displayedNum === "0" ||
+    return currentDisplay === "0" ||
       previousKeyType === "operator" ||
       previousKeyType === "calculate"
-      ? keyContent
-      : displayedNum + keyContent;
+      ? keyValue
+      : currentDisplay + keyValue;
   }
 
   if (keyType === "decimal") {
-    if (!displayedNum.includes(".")) return displayedNum + ".";
+    if (!currentDisplay.includes(".")) return currentDisplay + ".";
     if (previousKeyType === "operator" || previousKeyType === "calculate")
       return "0.";
-    return displayedNum;
+    return currentDisplay;
   }
 
   if (keyType === "operator") {
@@ -53,25 +64,25 @@ const createResultString = (key, displayedNum, state) => {
       operator &&
       previousKeyType !== "operator" &&
       previousKeyType !== "calculate"
-      ? calculate(firstValue, operator, displayedNum)
-      : displayedNum;
+      ? performCalculation(firstValue, operator, currentDisplay)
+      : currentDisplay;
   }
 
   if (keyType === "clear") return "0";
 
   if (keyType === "delete") {
-    return displayedNum === "0" ? "0" : displayedNum.slice(0, -1);
+    return currentDisplay === "0" ? "0" : currentDisplay.slice(0, -1);
   }
 
   if (keyType === "calculate") {
     if (calculateClicked) {
-      return displayedNum;
+      return currentDisplay;
     }
     return firstValue
       ? previousKeyType === "calculate"
-        ? calculate(displayedNum, operator, modValue)
-        : calculate(firstValue, operator, displayedNum)
-      : displayedNum;
+        ? performCalculation(currentDisplay, operator, modValue)
+        : performCalculation(firstValue, operator, currentDisplay)
+      : currentDisplay;
   }
 };
 
@@ -81,9 +92,9 @@ const updateCalculatorState = (
   key,
   calculator,
   calculatedValue,
-  displayedNum
+  currentDisplay
 ) => {
-  const keyType = getKeyType(key);
+  const keyType = determineKeyType(key);
   const { firstValue, operator, modValue, previousKeyType } =
     calculator.dataset;
 
@@ -97,7 +108,7 @@ const updateCalculatorState = (
       previousKeyType !== "operator" &&
       previousKeyType !== "calculate"
         ? calculatedValue
-        : displayedNum;
+        : currentDisplay;
     calculateClicked = false;
   }
 
@@ -106,7 +117,7 @@ const updateCalculatorState = (
       return;
     }
     calculator.dataset.modValue =
-      firstValue && previousKeyType === "calculate" ? modValue : displayedNum;
+      firstValue && previousKeyType === "calculate" ? modValue : currentDisplay;
     calculateClicked = true;
   }
 
@@ -119,8 +130,8 @@ const updateCalculatorState = (
   }
 };
 
-const updateVisualState = (key, calculator) => {
-  const keyType = getKeyType(key);
+const updateVisualAppearance = (key, calculator) => {
+  const keyType = determineKeyType(key);
   const clearButton = calculator.querySelector("[data-action=clear]");
 
   Array.from(key.parentNode.children).forEach((k) =>
@@ -130,9 +141,7 @@ const updateVisualState = (key, calculator) => {
   if (keyType === "operator") key.classList.add("is-depressed");
   if (keyType === "clear" && key.textContent !== "DEL")
     key.textContent = "RESET";
-  if (keyType !== "clear") {
-    clearButton.textContent = "RESET";
-  }
+  if (keyType !== "clear") clearButton.textContent = "RESET";
 };
 
 // Calculator Event Listener
@@ -141,36 +150,33 @@ const calculator = document.querySelector(".calculator-container");
 const display = calculator.querySelector(".calculator-display");
 const keys = calculator.querySelector(".calculator-keys");
 
-keys.addEventListener("click", (e) => {
-  if (!e.target.matches("button")) return;
+keys.addEventListener("click", (event) => {
+  if (!event.target.matches("button")) return;
 
-  const key = e.target;
-  const displayedNum = display.textContent;
-  const resultString = createResultString(
+  const key = event.target;
+  const currentDisplay = display.textContent;
+  const resultDisplay = generateResultDisplay(
     key,
-    displayedNum,
+    currentDisplay,
     calculator.dataset
   );
 
-  display.textContent = resultString;
-  updateCalculatorState(key, calculator, resultString, displayedNum);
-  updateVisualState(key, calculator);
+  display.textContent = resultDisplay;
+  updateCalculatorState(key, calculator, resultDisplay, currentDisplay);
+  updateVisualAppearance(key, calculator);
 });
 
 // Theme Switcher
 
-const toggler = document.querySelector(".theme-toggler");
+const themeToggler = document.querySelector(".theme-toggler");
 const body = document.body;
 
-toggler.addEventListener("click", () => {
+themeToggler.addEventListener("click", () => {
   if (body.classList.contains("dark")) {
-    body.classList.remove("dark");
-    body.classList.add("light");
+    body.classList.replace("dark", "light");
   } else if (body.classList.contains("light")) {
-    body.classList.remove("light");
-    body.classList.add("default");
+    body.classList.replace("light", "default");
   } else {
-    body.classList.remove("default");
-    body.classList.add("dark");
+    body.classList.replace("default", "dark");
   }
 });
